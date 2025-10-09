@@ -1,11 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Filminurk.Data;
+using Filminurk.Models.Movies;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Filminurk.Controllers
 {
     public class MoviesController : Controller
     {
+        private readonly FilminurkTARpe24Context _context;
+        public MoviesController ( FilminurkTARpe24Context context )
+        {
+            _context = context;
+        }
         public IActionResult Index()
         {
+            var result = _context.Movies.Select(x => new MoviesIndexViewModel
+            {
+                ID = x.ID,
+                Title = x.Title,
+                FirstPublisehed = x.FirstPublisehed,
+                Description = x.Description,
+                CurrentRatting = x.CurrentRatting,
+                MovieCreationCost = x.MovieCreationCost,
+                Studio = x.Studio,
+                genre = (Genre)x.genre,
+            });
             return View();
         }
     }

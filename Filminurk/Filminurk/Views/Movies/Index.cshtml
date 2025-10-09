@@ -1,5 +1,48 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<Filminurk.Models.Movies.MoviesIndexViewModel>
+
 @{
+	int rowNumber = 1;
 }
+
+<div>
+	<a asp-action="Create" asp-controller="Movies" type="submit" class="btn btn-primary"></a>
+</div>
+<div class="h1">
+	Filmid
+</div>
+<form method="get">
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">Filmi Pealkiri</th>
+				<th scope="col">Väljalaskeaeg</th>
+				<th scope="col">Hinnang</th>
+				<th scope="col">LoomisHind</th>
+				<th scope="col">Žanr</th>
+				<th scope="col">Studio</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var movie in Model)
+			{
+				<tr>
+					<td>@rowNumber</td>
+					<td>@movie.Title</td>
+					<td>@movie.FirstPublished</td>
+					<td>@movie.CurrentRatting</td>
+					<td>@movie.genre</td>
+					<td>@movie.MovieCreationCost</td>
+					<td>@movie.Studio</td>
+					<td></td>
+
+					<td>
+						<a asp-action="Edit" asp-route-id="@movie.ID">Muuda</a>
+						<a asp-action="Details" asp-route-id="@movie.ID">Vaata</a>
+						<a asp-action="Delete" asp-route-id="@movie.ID">Kustuta</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</form>
