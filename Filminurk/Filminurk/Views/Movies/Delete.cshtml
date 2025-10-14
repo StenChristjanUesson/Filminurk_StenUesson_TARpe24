@@ -1,0 +1,68 @@
+﻿@using Filminurk.Core.Domain
+
+@model Filminurk.Models.Movies.MoviesDeleteViewModel
+
+<h1>Kustuta Film</h1>
+
+<div>
+    <h4>Film</h4>
+    <hr />
+    <dl class="row">
+        <div>
+            <label asp-for="ID" class="col-sm-2 col-form-label">@Html.DisplayNameFor(Model => Model.ID)</label>
+        </div>
+    </dl>
+
+    <dl class="row">
+        <div>
+            <label asp-for="Title" class="col-sm-2 col-form-label">@Html.DisplayNameFor(Model => Model.Title)</label>
+        </div>
+    </dl>
+
+    <dl class="row">
+        <div>
+            <label asp-for="Description" class="col-sm-2 col-form-label">@Html.DisplayNameFor(Model => Model.Description)</label>
+        </div>
+    </dl>
+
+    <dl class="row">
+        <div>
+            <label asp-for="FirstPublished" class="col-sm-2 col-form-label">@Html.DisplayNameFor(Model => Model.FirstPublished)</label>
+        </div>
+    </dl>
+
+    <dl class="row">
+        <div>
+            <label asp-for="Director" class="col-sm-2 col-form-label">@Html.DisplayNameFor(Model => Model.Director)</label>
+        </div>
+    </dl>
+
+    <dl class="row">
+        <div>
+            <label asp-for="CurrentRatting" class="col-sm-2 col-form-label">@Html.DisplayNameFor(Model => Model.CurrentRatting)</label>
+        </div>
+    </dl>
+
+    <dl class="row">
+        <div>
+            <label asp-for="MovieCreationCost" class="col-sm-2 col-form-label">@Html.DisplayNameFor(Model => Model.MovieCreationCost)</label>
+        </div>
+    </dl>
+
+    <dl class="row">
+        <div>
+            <label asp-for="Studio" class="col-sm-2 col-form-label">@Html.DisplayNameFor(Model => Model.Studio)</label>
+        </div>
+    </dl>
+
+    <dl class="row">
+        <div>
+            <label asp-for="genre" class="col-sm-2 col-form-label">@Html.DisplayNameFor(Model => Model.genre)</label>
+        </div>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ID" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> | <a asp-action="Index">Cancel</a>
+    </form>
+</div>
