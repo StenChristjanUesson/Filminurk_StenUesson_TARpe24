@@ -1,16 +1,20 @@
 ﻿using Filminurk.Core.Dto;
+using Filminurk.Core.Dto.ServiceInterface;
 using Filminurk.Data;
 using Filminurk.Models.Movies;
 using Microsoft.AspNetCore.Mvc;
+using Genre = Filminurk.Models.Movies.Genre;
 
 namespace Filminurk.Controllers
 {
     public class MoviesController : Controller
     {
         private readonly FilminurkTARpe24Context _context;
-        public MoviesController ( FilminurkTARpe24Context context )
+        private readonly IMovieServices _movieServices;
+        public MoviesController ( FilminurkTARpe24Context context, IMovieServices movieServices )
         {
             _context = context;
+            _movieServices = movieServices;
         }
         public IActionResult Index()
         {
@@ -51,7 +55,7 @@ namespace Filminurk.Controllers
                 EntryModifiedAt = vm.EntryModifiedAt,
                 genre = (Core.Dto.Genre?)vm.genre,
             };
-            var result = await _context.Create(dto);
+            var result = await _movieServices.Create(dto);
             if (result == null)
             {
                 return RedirectToAction(nameof(Index));
