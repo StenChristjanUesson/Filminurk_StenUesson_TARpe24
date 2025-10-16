@@ -9,7 +9,7 @@ using Filminurk.Core.Dto.ServiceInterface;
 using Filminurk.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Filminurk.ApplicationServices
+namespace Filminurk.ApplicationServices.Services
 {
     public class MovieServices : IMovieServices
     {
@@ -45,6 +45,28 @@ namespace Filminurk.ApplicationServices
         {
             var result = await _context.Movies.FirstOrDefaultAsync(x => x.ID == id);
             return result;
+        }
+
+        public async Task<Movie> Update(MoviesDto dto)
+        {
+            Movie movie = new Movie();
+            movie.ID = Guid.NewGuid();
+            movie.Title = dto.Title;
+            movie.Description = dto.Description;
+            movie.FirstPublished = (DateOnly)dto.FirstPublished;
+            movie.Director = dto.Director;
+            movie.Actors = dto.Actors;
+            movie.CurrentRatting = dto.CurrentRatting;
+            movie.MovieCreationCost = dto.MovieCreationCost; //mine
+            movie.Studio = dto.Studio; //mine
+            movie.genre = (Core.Domain.Genre)dto.genre; //mine
+            //movie.EntryCreatedAt = DateTime.Now;
+            //movie.EntryModifiedAt = DateTime.Now;
+
+            await _context.Movies.AddAsync(movie);
+            await _context.SaveChangesAsync();
+
+            return movie;
         }
     }
 }
