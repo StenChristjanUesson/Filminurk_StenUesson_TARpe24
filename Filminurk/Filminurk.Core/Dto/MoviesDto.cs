@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Filminurk.Core.Domain;
 
 namespace Filminurk.Core.Dto
 {
-    public enum Genre
-    {
-        Horror, Action, Drama, Tragedy, Adventure, Animated, Romance, Comedy, Documentary, Musical, SliceOfLife, Fantasy, SuperNatural,
-    }
     public class MoviesDto
     {
         public Guid? ID { get; set; }

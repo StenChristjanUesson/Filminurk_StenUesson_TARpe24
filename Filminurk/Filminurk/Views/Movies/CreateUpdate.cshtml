@@ -1,10 +1,9 @@
-﻿@using Filminurk.Core.Domain
+﻿﻿@using Filminurk.Core.Domain
 @using Filminurk.Models.Movies
-@using Filminurk.Models.Movies.Genre
 
 @model Filminurk.Models.Movies.MoviesCreateUpdateViewModel
 
-@if (Model.ID.HasValue)
+@if (Model.ID != Guid.Empty)
 {
 	<h1>Muuda Film</h1>
 }
@@ -71,14 +70,22 @@ else
 		<div class="form-group row">
 			<label asp-for="genre" class="col-ms-2 col-form-label"></label>
 			<div class="col-sm-10">
-				<select asp-for="genre" asp-items="Html.GetEnumSelectList<Genre>()">
+				<select asp-for="genre" asp-items="Html.GetEnumSelectList<genre>()">
 					<option value="">-- Vali Žanr --</option>
 				</select>
 				<span></span>
 			</div>
 		</div>
+		@if (Model.ID != Guid.Empty)
+		{
+			<input asp-action="Create" asp-controller="Movies" type="submit" class="btn btn-primary" value="Create" />
+		}
+		else
+		{
+			<input asp-action="Update" asp-controller="Movies" type="submit" class="btn btn-primary" value="Update" />
+		}
+		<input asp-action="Indext" asp-controller="Movies" class="btn btn-success" value="Back" />
 
-		<input asp-action="Create" asp-controller="Movies" type="submit" class="btn btn-primary" value="Create" />
 
 	</form>
 </div>

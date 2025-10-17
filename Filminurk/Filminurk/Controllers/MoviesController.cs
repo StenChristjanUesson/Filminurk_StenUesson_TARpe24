@@ -36,11 +36,11 @@ namespace Filminurk.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            MoviesCreateViewModel result = new();
+            MoviesCreateUpdateViewModel result = new();
             return View("CreateUpdate", result);
         }
         [HttpPost]
-        public async Task<IActionResult> Create(MoviesCreateViewModel vm)
+        public async Task<IActionResult> Create(MoviesCreateUpdateViewModel vm)
         {
             var dto = new MoviesDto()
             {
@@ -64,24 +64,7 @@ namespace Filminurk.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-        [HttpGet]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var result = await _context.Movies.FirstOrDefaultAsync(x => x.ID == id);
-            if (result == null)
-            {
-                return NotFound();
-            }
 
-            _context.Movies.Remove(result);
-            await _context.SaveChangesAsync();
-
-            return (IActionResult)result;
-        }
         [HttpGet]
         public async Task<IActionResult> Update(Guid id)
         {
@@ -103,7 +86,32 @@ namespace Filminurk.Controllers
             vm.Studio = movie.Studio;
             vm.genre = (Genre)movie.genre;
 
-            return View(vm);
+            return View("CreateUpdate",vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(MoviesCreateUpdateViewModel vm)
+        {
+            var dto = new MoviesDto()
+            {
+                ID = vm.ID,
+                Title = vm.Title,
+                Description = vm.Description,
+                FirstPublished = vm.FirstPublished,
+                CurrentRatting = vm.CurrentRatting,
+                Director = vm.Director,
+                MovieCreationCost = vm.MovieCreationCost,
+                Studio = vm.Studio,
+                genre = (Core.Dto.Genre?)vm.genre,
+            };
+
+            var result = _movieServices.Update(dto);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]

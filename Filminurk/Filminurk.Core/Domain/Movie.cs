@@ -6,10 +6,6 @@ using System.Threading.Tasks;
 
 namespace Filminurk.Core.Domain
 {
-    public enum Genre
-    {
-        Horror, Action, Drama, Tragedy, Adventure, Animated, Romance, Comedy, Documentary, Musical, SliceOfLife, Fantasy, SuperNatural,
-    }
     public class Movie
     {
         public Guid ID { get; set; }
