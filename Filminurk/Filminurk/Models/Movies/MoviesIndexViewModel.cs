@@ -1,9 +1,7 @@
-﻿namespace Filminurk.Models.Movies
+﻿using Filminurk.Core.Domain;
+
+namespace Filminurk.Models.Movies
 {
-    public enum Genre
-    {
-        Horror, Action, Drama, Tragedy, Adventure, Animated, Romance, Comedy, Documentary, Musical, SliceOfLife, Fantasy, SuperNatural,
-    }
     public class MoviesIndexViewModel
     {
         public Guid ID { get; set; }

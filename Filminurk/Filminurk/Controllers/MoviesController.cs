@@ -5,7 +5,6 @@ using Filminurk.Data;
 using Filminurk.Models.Movies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Genre = Filminurk.Models.Movies.Genre;
 
 namespace Filminurk.Controllers
 {
@@ -29,7 +28,7 @@ namespace Filminurk.Controllers
                 CurrentRatting = x.CurrentRatting,
                 MovieCreationCost = x.MovieCreationCost,
                 Studio = x.Studio,
-                genre = (Genre)x.genre,
+                genre = x.genre,
             });
             return View();
         }
@@ -55,7 +54,7 @@ namespace Filminurk.Controllers
                 Studio = vm.Studio,
                 EntryCreatedAt = vm.EntryCreatedAt,
                 EntryModifiedAt = vm.EntryModifiedAt,
-                genre = (Core.Domain.Genre?)vm.genre,
+                genre = vm.genre,
             };
             var result = await _movieServices.Create(dto);
             if (result == null)
@@ -84,7 +83,7 @@ namespace Filminurk.Controllers
             vm.Director = movie.Director;
             vm.MovieCreationCost = movie.MovieCreationCost;
             vm.Studio = movie.Studio;
-            vm.genre = (Genre)movie.genre;
+            vm.genre = movie.genre;
 
             return View("CreateUpdate",vm);
         }
@@ -102,7 +101,7 @@ namespace Filminurk.Controllers
                 Director = vm.Director,
                 MovieCreationCost = vm.MovieCreationCost,
                 Studio = vm.Studio,
-                genre = (Core.Domain.Genre?)vm.genre,
+                genre = vm.genre,
             };
 
             var result = _movieServices.Update(dto);
@@ -131,7 +130,7 @@ namespace Filminurk.Controllers
             vm.Director = movies.Director;
             vm.MovieCreationCost = movies.MovieCreationCost;
             vm.Studio = movies.Studio;
-            vm.genre = (Genre)movies.genre;
+            vm.genre = movies.genre;
             return View(vm);
         }
 
