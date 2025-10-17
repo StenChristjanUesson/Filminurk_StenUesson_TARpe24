@@ -55,7 +55,7 @@ namespace Filminurk.Controllers
                 Studio = vm.Studio,
                 EntryCreatedAt = vm.EntryCreatedAt,
                 EntryModifiedAt = vm.EntryModifiedAt,
-                genre = (Core.Dto.Genre?)vm.genre,
+                genre = (Core.Domain.Genre?)vm.genre,
             };
             var result = await _movieServices.Create(dto);
             if (result == null)
@@ -102,7 +102,7 @@ namespace Filminurk.Controllers
                 Director = vm.Director,
                 MovieCreationCost = vm.MovieCreationCost,
                 Studio = vm.Studio,
-                genre = (Core.Dto.Genre?)vm.genre,
+                genre = (Core.Domain.Genre?)vm.genre,
             };
 
             var result = _movieServices.Update(dto);
