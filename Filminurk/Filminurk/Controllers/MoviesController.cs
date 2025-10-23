@@ -1,6 +1,6 @@
 ﻿using Filminurk.Core.Domain;
 using Filminurk.Core.Dto;
-using Filminurk.Core.Dto.ServiceInterface;
+using Filminurk.Core.ServiceInterface;
 using Filminurk.Data;
 using Filminurk.Models.Movies;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +12,12 @@ namespace Filminurk.Controllers
     {
         private readonly FilminurkTARpe24Context _context;
         private readonly IMovieServices _movieServices;
-        public MoviesController ( FilminurkTARpe24Context context, IMovieServices movieServices )
+        private readonly IFileServices _filesServices;
+        public MoviesController ( FilminurkTARpe24Context context, IMovieServices movieServices, IFileServices fileServices )
         {
             _context = context;
             _movieServices = movieServices;
+            _filesServices = fileServices;
         }
         public IActionResult Index()
         {
@@ -55,6 +57,15 @@ namespace Filminurk.Controllers
                 EntryCreatedAt = vm.EntryCreatedAt,
                 EntryModifiedAt = vm.EntryModifiedAt,
                 genre = vm.genre,
+                Files = vm.Files,
+                FileToApiDtos = vm.Images.Select(x => new FileToApiDto
+                {
+                    ImageID = x.ImageID,
+                    FilePath = x.FilePath,
+                    MovieID = x.MovieID,
+                    IsPoster = x.IsPoster,
+                })
+
             };
             var result = await _movieServices.Create(dto);
             if (result == null)
@@ -74,16 +85,26 @@ namespace Filminurk.Controllers
                 return NotFound();
             }
 
+            var images = await _context.FilesToApi.Where(x => x.MovieID == id).Select(y => new ImageViewModel
+            {
+                FilePath = y.ExistingFilePath,
+                ImageID = id
+            }).ToArrayAsync();
+
             var vm = new MoviesCreateUpdateViewModel();
             vm.ID = movie.ID;
             vm.Title = movie.Title;
             vm.Description = movie.Description;
             vm.FirstPublished = movie.FirstPublished;
             vm.CurrentRatting = movie.CurrentRatting;
-            vm.Director = movie.Director;
             vm.MovieCreationCost = movie.MovieCreationCost;
             vm.Studio = movie.Studio;
             vm.genre = movie.genre;
+            vm.EntryCreatedAt = movie.EntryCreatedAt;
+            vm.EntryModifiedAt = movie.EntryModifiedAt;
+            vm.Director = movie.Director;
+            vm.Actors = movie.Actors;
+            vm.Images.AddRange(images);
 
             return View("CreateUpdate",vm);
         }
@@ -99,9 +120,19 @@ namespace Filminurk.Controllers
                 FirstPublished = vm.FirstPublished,
                 CurrentRatting = vm.CurrentRatting,
                 Director = vm.Director,
+                Actors = vm.Actors,
                 MovieCreationCost = vm.MovieCreationCost,
                 Studio = vm.Studio,
                 genre = vm.genre,
+                EntryCreatedAt = vm.EntryCreatedAt,
+                EntryModifiedAt = vm.EntryModifiedAt,
+                Files = vm.Files,
+                FileToApiDtos = vm.Images.Select(x => new FileToApiDto
+                {
+                    MovieID = x.MovieID,
+                    FilePath = x.FilePath,
+                    ImageID = x.ImageID,
+                }).ToArray()
             };
 
             var result = _movieServices.Update(dto);
@@ -121,6 +152,12 @@ namespace Filminurk.Controllers
             {
                 return NotFound();
             }
+            var images = await _context.FilesToApi.Where(x  => x.MovieID == id).Select(y => new ImageViewModel
+            {
+                FilePath = y.ExistingFilePath,
+                ImageID = y.ImageID,
+            }).ToArrayAsync();
+
             var vm = new MoviesCreateUpdateViewModel();
             vm.ID = movies.ID;
             vm.Title = movies.Title;
@@ -128,9 +165,14 @@ namespace Filminurk.Controllers
             vm.FirstPublished = movies.FirstPublished;
             vm.CurrentRatting = movies.CurrentRatting;
             vm.Director = movies.Director;
+            vm.Actors = movies.Actors;
             vm.MovieCreationCost = movies.MovieCreationCost;
             vm.Studio = movies.Studio;
             vm.genre = movies.genre;
+            vm.EntryCreatedAt = movies.EntryCreatedAt;
+            vm.EntryModifiedAt = movies.EntryModifiedAt;
+            vm.Images.AddRange(images);
+
             return View(vm);
         }
 

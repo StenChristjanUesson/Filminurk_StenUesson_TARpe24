@@ -1,4 +1,6 @@
-﻿namespace Filminurk.Models.Movies
+﻿using Filminurk.Core.Domain;
+
+namespace Filminurk.Models.Movies
 {
     public class MoviesDeleteViewModel
     {

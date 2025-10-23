@@ -1,5 +1,5 @@
 using Filminurk.ApplicationServices.Services;
-using Filminurk.Core.Dto.ServiceInterface;
+using Filminurk.Core.ServiceInterface;
 using Filminurk.Data;
 using Microsoft.EntityFrameworkCore;
 

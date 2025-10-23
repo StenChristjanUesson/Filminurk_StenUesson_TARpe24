@@ -15,8 +15,10 @@ namespace Filminurk.Models.Movies
         public DateTime? EntryModifiedAt { get; set; }
         //public List<UserComment>? reviews { get; set; }
 
-        /* 3 õpilase valitud andmetüüpi */
+        /* Kassaolevate piltide andmeomadused */
+        public List<ImageViewModel> Images { get; set; } = new List<ImageViewModel>();
 
+        /* 3 õpilase valitud andmetüüpi */
         public decimal? MovieCreationCost { get; set; }
         public List<string>? Studio { get; set; }
         public Genre? genre { get; set; }

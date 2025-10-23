@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Filminurk.Core.Domain;
 using Filminurk.Core.Dto;
-using Filminurk.Core.Dto.ServiceInterface;
+using Filminurk.Core.ServiceInterface;
 using Filminurk.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,10 +14,12 @@ namespace Filminurk.ApplicationServices.Services
     public class MovieServices : IMovieServices
     {
         private readonly FilminurkTARpe24Context _context;
+        private readonly IFileServices _fileServices; //failid
 
-        public MovieServices( FilminurkTARpe24Context context )
+        public MovieServices( FilminurkTARpe24Context context, IFileServices fileServices )
         {
             _context = context;
+            _fileServices = fileServices;
         }
 
         public async Task<Movie> Create(MoviesDto dto)
@@ -33,8 +35,9 @@ namespace Filminurk.ApplicationServices.Services
             movie.MovieCreationCost = dto.MovieCreationCost; //mine
             movie.Studio = dto.Studio; //mine
             movie.genre = (Core.Domain.Genre)dto.genre; //mine
-            //movie.EntryCreatedAt = DateTime.Now;
-            //movie.EntryModifiedAt = DateTime.Now;
+            movie.EntryCreatedAt = DateTime.Now;
+            movie.EntryModifiedAt = DateTime.Now;
+            _fileServices.FilesToApi(dto, movie);
 
             await _context.Movies.AddAsync(movie);
             await _context.SaveChangesAsync();
@@ -60,8 +63,9 @@ namespace Filminurk.ApplicationServices.Services
             movie.MovieCreationCost = dto.MovieCreationCost; //mine
             movie.Studio = dto.Studio; //mine
             movie.genre = (Core.Domain.Genre)dto.genre; //mine
-            //movie.EntryCreatedAt = DateTime.Now;
-            //movie.EntryModifiedAt = DateTime.Now;
+            movie.EntryCreatedAt = DateTime.Now;
+            movie.EntryModifiedAt = DateTime.Now;
+            _fileServices.FilesToApi(dto, movie);
 
             await _context.Movies.AddAsync(movie);
             await _context.SaveChangesAsync();
@@ -75,7 +79,14 @@ namespace Filminurk.ApplicationServices.Services
             var result = await _context.Movies
                 .FirstOrDefaultAsync(m => m.ID == id);
 
+            var images = await _context.FilesToApi.Where(x => x.MovieID == id).Select(y => new FileToApiDto
+            {
+                ImageID = y.ImageID,
+                MovieID = y.MovieID,
+                FilePath = y.ExistingFilePath,
+            }).ToArrayAsync();
 
+            await _fileServices.RemoveImagesFromApi(images);
             _context.Movies.Remove(result);
             await _context.SaveChangesAsync();
 

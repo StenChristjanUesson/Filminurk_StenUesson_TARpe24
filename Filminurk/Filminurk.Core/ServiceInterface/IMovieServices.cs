@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Filminurk.Core.Domain;
+using Filminurk.Core.Dto;
 
-namespace Filminurk.Core.Dto.ServiceInterface
+namespace Filminurk.Core.ServiceInterface
 {
     public interface IMovieServices // see in interface. asub .core/serviceinterface
     {

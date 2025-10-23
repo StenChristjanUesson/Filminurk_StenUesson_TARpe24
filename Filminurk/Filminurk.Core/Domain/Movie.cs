@@ -22,6 +22,9 @@ namespace Filminurk.Core.Domain
         public decimal? MovieCreationCost { get; set; }
         public List<string>? Studio { get; set; }
         public Genre genre { get; set; }
-        
+
+        public DateTime? EntryCreatedAt { get; set; }
+        public DateTime? EntryModifiedAt { get; set; }
+
     }
 }
