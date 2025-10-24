@@ -75,6 +75,40 @@ namespace Filminurk.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //[HttpGet]
+        //public async Task<IActionResult> Details(Guid id)
+        //{
+        //    var movie = await _movieServices.DetailsAsync(id);
+
+        //    if (movie == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var images = await _context.FilesToApi.Where(x => x.MovieID == id).Select(y => new ImageViewModel
+        //    {
+        //        FilePath = y.ExistingFilePath,
+        //        ImageID = id
+        //    }).ToArrayAsync();
+
+        //    var vm = new ImageViewModel();
+        //    vm.IsPoster = vm.IsPoster;
+        //    vm.Title = movie.Title;
+        //    vm.Description = movie.Description;
+        //    vm.FirstPublished = movie.FirstPublished;
+        //    vm.CurrentRatting = movie.CurrentRatting;
+        //    vm.MovieCreationCost = movie.MovieCreationCost;
+        //    vm.Studio = movie.Studio;
+        //    vm.genre = movie.genre;
+        //    vm.EntryCreatedAt = movie.EntryCreatedAt;
+        //    vm.EntryModifiedAt = movie.EntryModifiedAt;
+        //    vm.Director = movie.Director;
+        //    vm.Actors = movie.Actors;
+        //    vm.Images.AddRange(images);
+
+        //    return View("CreateUpdate", vm);
+        //}
+
         [HttpGet]
         public async Task<IActionResult> Update(Guid id)
         {
@@ -152,6 +186,7 @@ namespace Filminurk.Controllers
             {
                 return NotFound();
             }
+
             var images = await _context.FilesToApi.Where(x  => x.MovieID == id).Select(y => new ImageViewModel
             {
                 FilePath = y.ExistingFilePath,
@@ -185,6 +220,16 @@ namespace Filminurk.Controllers
                 return NotFound();
             }
             return RedirectToAction(nameof(Index));
+        }
+        private async Task<ImageViewModel[]> FileFromDatabase(Guid id)
+        {
+            return await _context.FilesToApi.Where(x => x.MovieID == id).Select(y => new ImageViewModel
+            {
+                ImageID = y.ImageID,
+                MovieID = y.MovieID,
+                IsPoster = y.IsPoster,
+                FilePath = y.ExistingFilePath
+            }).ToArrayAsync();
         }
     }
 }

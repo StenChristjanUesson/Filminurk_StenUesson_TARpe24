@@ -47,7 +47,7 @@ namespace Filminurk.ApplicationServices.Services
                             MovieID = domain.ID,
                         };
 
-                        _conext.FilesToApi.AddAsync(path);
+                        _conext.FilesToApi.Add(path);
                     }
                 }
             }
