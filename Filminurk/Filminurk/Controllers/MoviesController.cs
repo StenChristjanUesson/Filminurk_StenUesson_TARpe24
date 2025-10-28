@@ -75,39 +75,35 @@ namespace Filminurk.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> Details(Guid id)
-        //{
-        //    var movie = await _movieServices.DetailsAsync(id);
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var movie = await _movieServices.DetailsAsync(id);
 
-        //    if (movie == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (movie == null)
+            {
+                return NotFound();
+            }
+            ImageViewModel[] images = await FileFromDatabase(id);
 
-        //    var images = await _context.FilesToApi.Where(x => x.MovieID == id).Select(y => new ImageViewModel
-        //    {
-        //        FilePath = y.ExistingFilePath,
-        //        ImageID = id
-        //    }).ToArrayAsync();
+            var vm = new MoviesDetailsViewModel();
 
-        //    var vm = new ImageViewModel();
-        //    vm.IsPoster = vm.IsPoster;
-        //    vm.Title = movie.Title;
-        //    vm.Description = movie.Description;
-        //    vm.FirstPublished = movie.FirstPublished;
-        //    vm.CurrentRatting = movie.CurrentRatting;
-        //    vm.MovieCreationCost = movie.MovieCreationCost;
-        //    vm.Studio = movie.Studio;
-        //    vm.genre = movie.genre;
-        //    vm.EntryCreatedAt = movie.EntryCreatedAt;
-        //    vm.EntryModifiedAt = movie.EntryModifiedAt;
-        //    vm.Director = movie.Director;
-        //    vm.Actors = movie.Actors;
-        //    vm.Images.AddRange(images);
+            vm.ID = movie.ID;
+            vm.Title = movie.Title;
+            vm.Description = movie.Description;
+            vm.FirstPublished = movie.FirstPublished;
+            vm.CurrentRatting = movie.CurrentRatting;
+            vm.MovieCreationCost = movie.MovieCreationCost;
+            vm.Studio = movie.Studio;
+            vm.genre = movie.genre;
+            vm.EntryCreatedAt = movie.EntryCreatedAt;
+            vm.EntryModifiedAt = movie.EntryModifiedAt;
+            vm.Director = movie.Director;
+            vm.Actors = movie.Actors;
+            vm.Images.AddRange(images);
 
-        //    return View("CreateUpdate", vm);
-        //}
+            return View("CreateUpdate", vm);
+        }
 
         [HttpGet]
         public async Task<IActionResult> Update(Guid id)
