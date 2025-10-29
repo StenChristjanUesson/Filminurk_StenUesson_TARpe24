@@ -30,7 +30,7 @@ namespace Filminurk.Controllers
                 CurrentRatting = x.CurrentRatting,
                 MovieCreationCost = x.MovieCreationCost,
                 Studio = x.Studio,
-                genre = x.genre,
+                genre = (Genre)x.genre,
             });
             return View();
         }
@@ -129,7 +129,7 @@ namespace Filminurk.Controllers
             vm.CurrentRatting = movie.CurrentRatting;
             vm.MovieCreationCost = movie.MovieCreationCost;
             vm.Studio = movie.Studio;
-            vm.genre = movie.genre;
+            vm.genre = (Genre)movie.genre;
             vm.EntryCreatedAt = movie.EntryCreatedAt;
             vm.EntryModifiedAt = movie.EntryModifiedAt;
             vm.Director = movie.Director;
@@ -199,7 +199,7 @@ namespace Filminurk.Controllers
             vm.Actors = movies.Actors;
             vm.MovieCreationCost = movies.MovieCreationCost;
             vm.Studio = movies.Studio;
-            vm.genre = movies.genre;
+            vm.genre = (Genre)movies.genre;
             vm.EntryCreatedAt = movies.EntryCreatedAt;
             vm.EntryModifiedAt = movies.EntryModifiedAt;
             vm.Images.AddRange(images);
