@@ -34,7 +34,7 @@ namespace Filminurk.ApplicationServices.Services
             movie.CurrentRatting = dto.CurrentRatting;
             movie.MovieCreationCost = dto.MovieCreationCost; //mine
             movie.Studio = dto.Studio; //mine
-            movie.genre = (Core.Domain.Genre)dto.genre; //mine
+            movie.genre = (Genre)dto.genre; //mine
             movie.EntryCreatedAt = DateTime.Now;
             movie.EntryModifiedAt = DateTime.Now;
             _fileServices.FilesToApi(dto, movie);
@@ -62,7 +62,7 @@ namespace Filminurk.ApplicationServices.Services
             movie.CurrentRatting = dto.CurrentRatting;
             movie.MovieCreationCost = dto.MovieCreationCost; //mine
             movie.Studio = dto.Studio; //mine
-            movie.genre = (Core.Domain.Genre)dto.genre; //mine
+            movie.genre = (Genre)dto.genre; //mine
             movie.EntryCreatedAt = DateTime.Now;
             movie.EntryModifiedAt = DateTime.Now;
             _fileServices.FilesToApi(dto, movie);
