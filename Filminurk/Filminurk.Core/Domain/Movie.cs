@@ -15,7 +15,7 @@ namespace Filminurk.Core.Domain
         public string Director { get; set; }
         public List<string>? Actors { get; set; }
         public decimal? CurrentRatting { get; set; }
-        //public List<UserComment>? reviews { get; set; }
+        public List<UserComment>? reviews { get; set; }
 
         /* 3 õpilase valitud andmetüüpi */
 
