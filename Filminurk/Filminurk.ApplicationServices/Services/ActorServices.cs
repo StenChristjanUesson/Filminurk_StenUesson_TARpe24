@@ -11,11 +11,11 @@ namespace Filminurk.ApplicationServices.Services
 {
     public interface ActorServices : IActorServices
     {
-        private readonly FilminurkTARpe24Context _context;
+        //private readonly FilminurkTARpe24Context _context;
 
-        public ActorServices(FilminurkTARpe24Context context)
-        {
-            _context = context;
-        }
+        //public ActorServices(FilminurkTARpe24Context context)
+        //{
+        //    _context = context;
+        //}
     }
 }
