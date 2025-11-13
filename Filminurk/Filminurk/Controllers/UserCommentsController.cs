@@ -68,5 +68,49 @@ namespace Filminurk.Controllers
             }
             return NotFound();
         }
+        [HttpGet]
+        public async Task<IActionResult> DetailsAdmin(Guid id)
+        {
+            var requestedComment = await _userCommentsServices.DetailsAsync(id);
+
+            if (requestedComment == null) { return NotFound(); }
+
+            var commenTVM = new UserCommentIndexViewModel();
+
+            commenTVM.CommentID = requestedComment.CommentID;
+            commenTVM.CommenterBody = requestedComment.CommenterBody;
+            commenTVM.CommenterUserID = requestedComment.CommenterUserID;
+            commenTVM.CommentedScore = requestedComment.CommentedScore;
+            commenTVM.CommentCreatedAt = requestedComment.CommentCreatedAt;
+            commenTVM.CommentModifiedAt = requestedComment.CommentModifiedAt;
+            commenTVM.CommentDeletedAt = requestedComment.CommentDeletedAt;
+
+            return View(commenTVM);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteComment(Guid id)
+        {
+            var deleteEntry = await _userCommentsServices.DetailsAsync(id);
+
+            if (deleteEntry == null) { return NotFound(); }
+
+            var commentVM = new UserCommentIndexViewModel();
+            commentVM.CommentID = deleteEntry.CommentID;
+            commentVM.CommenterBody = deleteEntry.CommenterBody;
+            commentVM.CommenterUserID = deleteEntry.CommenterUserID;
+            commentVM.CommentedScore = deleteEntry.CommentedScore;
+            commentVM.CommentCreatedAt = deleteEntry.CommentCreatedAt;
+            commentVM.CommentModifiedAt = deleteEntry.CommentModifiedAt;
+            commentVM.CommentDeletedAt = deleteEntry.CommentDeletedAt;
+            return View("DeleteAdmin",commentVM);
+        }
+        [HttpPost/*, ActionName("DeleteCommentAdmin")*/]
+        public async Task<IActionResult> DeleteAdminPost(Guid id)
+        {
+            var deleteThisComment = await _userCommentsServices.Delete(id);
+            if (deleteThisComment == null) { return NotFound(); }
+            return View();
+        }
     }
 }

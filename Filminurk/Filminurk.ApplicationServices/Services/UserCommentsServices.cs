@@ -7,6 +7,7 @@ using Filminurk.Core.Domain;
 using Filminurk.Core.Dto;
 using Filminurk.Core.ServiceInterface;
 using Filminurk.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Filminurk.ApplicationServices.Services
 {
@@ -36,6 +37,21 @@ namespace Filminurk.ApplicationServices.Services
             await _context.SaveChangesAsync();
 
             return domain;
+        }
+
+        public async Task<UserComment> DetailsAsync(Guid id)
+        {
+            var returnedComment = await _context.UserComments.FirstOrDefaultAsync(x => x.CommentID == id);
+            return returnedComment;
+        }
+
+        public async Task<UserComment> Delete(Guid id)
+        {
+            var result = await _context.UserComments.FirstOrDefaultAsync(x =>x.CommentID == id);
+            _context.UserComments.Remove(result);
+            await _context.SaveChangesAsync();
+            return result;
+            //TODO: send email to user, that comment was removed, containing original comment.
         }
     }
 }

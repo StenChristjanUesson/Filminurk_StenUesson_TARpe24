@@ -12,5 +12,7 @@ namespace Filminurk.Core.ServiceInterface
     public interface IUserCommentsServices
     {
         Task<UserComment> NewComment(UserCommentDto newcommentDto);
+        Task<UserComment> DetailsAsync(Guid id);
+        Task<UserComment> Delete(Guid id);
     }
 }
