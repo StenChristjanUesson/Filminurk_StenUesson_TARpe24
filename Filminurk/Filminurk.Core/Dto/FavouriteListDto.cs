@@ -19,8 +19,8 @@ namespace Filminurk.Core.Dto
         public List<Actor>? ListOfActors { get; set; }
 
         public DateTime ListCreatedAt { get; set; }
-        public DateTime ListUpdatedAt { get; set; }
-        public DateTime ListDeletedAt { get; set; }
+        public DateTime? ListUpdatedAt { get; set; }
+        public DateTime? ListDeletedAt { get; set; }
         public bool IsReported { get; set; }
     }
 }

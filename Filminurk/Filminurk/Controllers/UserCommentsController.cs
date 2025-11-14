@@ -96,7 +96,7 @@ namespace Filminurk.Controllers
             if (deleteEntry == null) { return NotFound(); }
 
             var commentVM = new UserCommentIndexViewModel();
-            commentVM.CommentID = deleteEntry.CommentID;
+            commentVM.CommentID = deleteEntry.CommentID; 
             commentVM.CommenterBody = deleteEntry.CommenterBody;
             commentVM.CommenterUserID = deleteEntry.CommenterUserID;
             commentVM.CommentedScore = deleteEntry.CommentedScore;
