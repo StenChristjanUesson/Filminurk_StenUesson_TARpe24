@@ -94,12 +94,31 @@ namespace Filminurk.Controllers
                 convertedIDs = MovieToId(newListDto.ListOfMovies);
             }
             */
-            var newList = await _favouriteListsServices.Create(newListDto);
-            if (newList != null)
+            if (thisList != null)
             {
                 return BadRequest();
             }
-            return RedirectToAction("Index", vm);
+            return RedirectToAction("Details", thisList);
+        }
+        [HttpPost]
+        public IActionResult UserTogglePrivacy(Guid id)
+        {
+            favouriteList thisList = _favouriteListsServices.DetailsAsync(id);
+            FavouriteListDto updatedList = new FavouriteListDto();
+            updatedList.FavouriteListID = thisList.FavouriteListID;
+            updatedList.ListBelongsToUser = thisList.ListBelongsToUser;
+            updatedList.ListName = thisList.ListName;
+            updatedList.ListDescription = thisList.ListDescription;
+            updatedList.IsPrivate = thisList.IsPrivate;
+            updatedList.ListOfMovies = updatedList.ListOfMovies;
+            updatedList.IsReported = thisList.IsReported;
+            updatedList.IsMovieOrActor = thisList.IsMovieOrActor;
+            updatedList.ListCreatedAt = thisList.ListCreatedAt;
+            updatedList.ListModifiedAt = DateTime.Now;
+            updatedList.ListDeletedAt = thisList.ListDeletedAt;
+            thisList.IsPrivate = !thisList.IsPrivate;
+            _favouriteListsServices.Update(thisList);
+            return View("Details");
         }
 
         private List<Guid> MovieToId(List<Movie> ListOfMovies)
