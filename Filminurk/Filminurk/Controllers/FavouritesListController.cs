@@ -116,6 +116,7 @@ namespace Filminurk.Controllers
             updatedList.ListCreatedAt = thisList.ListCreatedAt;
             updatedList.ListModifiedAt = DateTime.Now;
             updatedList.ListDeletedAt = thisList.ListDeletedAt;
+
             thisList.IsPrivate = !thisList.IsPrivate;
             _favouriteListsServices.Update(thisList);
             return View("Details");

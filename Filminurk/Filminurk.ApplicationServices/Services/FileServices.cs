@@ -7,6 +7,7 @@ using Filminurk.Core.Domain;
 using Filminurk.Core.Dto;
 using Filminurk.Core.ServiceInterface;
 using Filminurk.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 
 namespace Filminurk.ApplicationServices.Services
@@ -52,7 +53,7 @@ namespace Filminurk.ApplicationServices.Services
              }
          }  */
 
-        public void FilesToApi(MoviesDTO dto, Movie domain)
+        public void FilesToApi(MoviesDto dto, Movie domain)
         {
             if (dto.Files != null && dto.Files.Count > 0)
             {
@@ -102,7 +103,7 @@ namespace Filminurk.ApplicationServices.Services
             return null;
         }
 
-        public async Task<List<FileToApi>> RemoveImagesFromApi(FileToApiDTO[] dtos)
+        public async Task<List<FileToApi>> RemoveImagesFromApi(FileToApiDto[] dtos)
         {
             foreach (var dto in dtos)
             {
