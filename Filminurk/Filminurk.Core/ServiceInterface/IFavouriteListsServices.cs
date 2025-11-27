@@ -8,7 +8,7 @@ using Filminurk.Core.Dto;
 
 namespace Filminurk.Core.ServiceInterface
 {
-    public class IFavouriteListsServices
+    public interface IFavouriteListsServices
     {
         Task<favouriteList> DetailsAsync(Guid id);
         Task<favouriteList> Create(FavouriteListDto dto);
