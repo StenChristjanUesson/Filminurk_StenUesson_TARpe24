@@ -7,7 +7,6 @@ using Filminurk.Core.Domain;
 using Filminurk.Core.Dto;
 using Filminurk.Core.ServiceInterface;
 using Filminurk.Data;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 
 namespace Filminurk.ApplicationServices.Services
@@ -15,15 +14,45 @@ namespace Filminurk.ApplicationServices.Services
     public class FileServices : IFileServices
     {
         private readonly IHostEnvironment _webHost;
-        private readonly FilminurkTARpe24Context _conext;
+        private readonly FilminurkTARpe24Context _context;
 
-        public FileServices(IHostEnvironment webHost, FilminurkTARpe24Context conext)
+        public FileServices(IHostEnvironment webHost, FilminurkTARpe24Context context)
         {
             _webHost = webHost;
-            _conext = conext;
+            _context = context;
         }
+        /* public void FilesToApi(MoviesDTO dto, Movie domain)
+         {
+             if (dto.Files != null && dto.Files.Count > 0)
+             {
+                 if (!Directory.Exists(_webHost.ContentRootPath + "\\wwwroot\\multipleFileUpload\\"))
+                 {
+                     Directory.CreateDirectory(_webHost.ContentRootPath + "\\wwwroot\\multipleFileUpload\\");
+                 }
 
-        public void FilesToApi(MoviesDto dto, Movie domain)
+                 foreach (var file in dto.Files)
+                 {
+                     string uploadsFolder = Path.Combine(_webHost.ContentRootPath, "wwwroot", "multipleFileUpload");
+                     string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                     using (var fileStream = new FileStream(filePath, FileMode.Create))
+                     {
+                         file.CopyTo(fileStream);
+                         FileToApi path = new FileToApi()
+                         {
+                             ImageID = Guid.NewGuid(),
+                             ExistingFilePath = filePath,
+                             MovieID = domain.ID,
+                         };
+                         _context.FileToApi.AddAsync(path);
+                     }
+                 }
+
+             }
+         }  */
+
+        public void FilesToApi(MoviesDTO dto, Movie domain)
         {
             if (dto.Files != null && dto.Files.Count > 0)
             {
@@ -31,13 +60,14 @@ namespace Filminurk.ApplicationServices.Services
                 {
                     Directory.CreateDirectory(_webHost.ContentRootPath + "\\wwwroot\\multipleFileUpload\\");
                 }
+
                 foreach (var file in dto.Files)
                 {
-                    string uploadsFolder = Path.Combine(_webHost.ContentRootPath + "wwwroot", "multipleFileUpload");
+                    string uploadsFolder = Path.Combine(_webHost.ContentRootPath, "wwwroot", "multipleFileUpload");
                     string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-                    using (var fileStream = new FileStream(filePath,FileMode.Create))
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         file.CopyTo(fileStream);
                         FileToApi path = new FileToApi
@@ -47,15 +77,17 @@ namespace Filminurk.ApplicationServices.Services
                             MovieID = domain.ID,
                         };
 
-                        _conext.FilesToApi.Add(path);
+                        _context.FilesToApi.Add(path);
                     }
+
                 }
+
             }
         }
 
         public async Task<FileToApi> RemoveImageFromApi(FileToApiDto dto)
         {
-            var imageID = await _conext.FilesToApi.FirstOrDefaultAsync(x => x.ImageID == dto.ImageID);
+            var imageID = await _context.FilesToApi.FirstOrDefaultAsync(x => x.ImageID == dto.ImageID);
 
             var filePath = _webHost.ContentRootPath + "\\wwwroot\\multipleFileUpload\\" + imageID.ExistingFilePath;
 
@@ -64,13 +96,13 @@ namespace Filminurk.ApplicationServices.Services
                 File.Delete(filePath);
             }
 
-            _conext.FilesToApi.Remove(imageID);
-            await _conext.SaveChangesAsync();
+            _context.FilesToApi.Remove(imageID);
+            await _context.SaveChangesAsync();
 
             return null;
         }
 
-        public async Task<List<FileToApi>> RemoveImagesFromApi(FileToApiDto[] dtos)
+        public async Task<List<FileToApi>> RemoveImagesFromApi(FileToApiDTO[] dtos)
         {
             foreach (var dto in dtos)
             {

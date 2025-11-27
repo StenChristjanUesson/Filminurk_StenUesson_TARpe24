@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace Filminurk.Core.Domain
 {
     public class favouriteList
     {
+        [Key]
         public Guid FavouriteListID { get; set; }
         public string ListBelongsToUser { get; set; }
         public bool IsMovieOrActor { get; set; }
@@ -18,8 +20,8 @@ namespace Filminurk.Core.Domain
         public List<Actor>? ListOfActors { get; set; }
 
         public DateTime ListCreatedAt { get; set; }
-        public DateTime? ListUpdatedAt { get; set; }
+        public DateTime? ListModifiedAt { get; set; }
         public DateTime? ListDeletedAt { get; set; }
-        public bool IsReported { get; set; }
+        public bool IsReported { get; set; } = false;
     }
 }

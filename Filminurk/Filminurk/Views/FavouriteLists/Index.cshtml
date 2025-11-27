@@ -17,7 +17,9 @@
 				{
 					<tr>
 						<th scope="col" colspan="2">
-							<span>Kahjuks ei leidnud ühtegi lemmikute nimekirja.</span>
+							<span>
+								Kahjuks ei leidnud ühtegi lemmikute nimekirja.
+							</span>
 						</th>
 					</tr>
 				}
@@ -35,16 +37,35 @@
 				{
 					<table>
 						<tr>
-							<td colspan="2">Sorry, no list</td>
+							<td colspan="2">Sorry, No list!</td>
 						</tr>
 						<tr>
-							<td><img width="128 src"/></td>
+							<td><img width="128" src="~/lib/defaultassets/image/noposter.png" /></td>
 						</tr>
 					</table>
 				}
 				else
 				{
-					
+					@foreach (var list in Model)
+					{
+						<table>
+							<tr>
+								<td colspan="2">
+									<a asp-action="UserDetails" asp-controller="FavouritesLists" asp-route-id="@list.FavouriteListID" asp-route-thisuserid="@List.ListBelongsToUser">@list.ListName</a>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									@foreach (var image in list.Image)
+									{
+										<partial name="_ImageIndex" model="image" />
+									}
+								</td>
+								<td>@list.ListDescription</td>
+							</tr>
+						</table>
+						rowNumber++;
+					}
 				}
 			</tbody>
 		</table>
