@@ -1,4 +1,5 @@
-﻿using Filminurk.ApplicationServices.Services;
+﻿using System.Threading.Tasks;
+using Filminurk.ApplicationServices.Services;
 using Filminurk.Core.Domain;
 using Filminurk.Core.Dto;
 using Filminurk.Core.ServiceInterface;
@@ -85,7 +86,6 @@ namespace Filminurk.Controllers
                 var thismovie = _context.Movies.Where(tm => tm.ID == movieId).ToArray().Take(1);
                 listofmoviestoadd.Add((Movie)thismovie);
             }
-            newListDto.ListOfMovies = listofmoviestoadd;
 
             /*
             List<Guid> convertedIDs = new List<Guid>();
@@ -94,16 +94,62 @@ namespace Filminurk.Controllers
                 convertedIDs = MovieToId(newListDto.ListOfMovies);
             }
             */
-            if (thisList != null)
+            var newList = await _favouriteListsServices.Create(newListDto/*, conevetedIDs */);
+            if (newList != null)
             {
                 return BadRequest();
             }
-            return RedirectToAction("Details", thisList);
+            return RedirectToAction("Index", vm);
         }
-        [HttpPost]
-        public IActionResult UserTogglePrivacy(Guid id)
+
+        [HttpGet]
+        public async Task<IActionResult> UserDetails(Guid id, Guid thisuserid)
         {
-            favouriteList thisList = _favouriteListsServices.DetailsAsync(id);
+            if (id == null || thisuserid == null)
+            {
+                return BadRequest();
+            }
+            var thisList = _context.favouriteLists
+                .Where(tl => tl.FavouriteListID == id && tl.ListBelongsToUser == thisuserid.ToString())
+                .Select
+                (
+                stl => new FavoriteListUserDetailsViewModel
+                {
+                    FavouriteListID = stl.FavouriteListID,
+                    ListBelongsToUser = stl.ListBelongsToUser,
+                    IsMovieOrActor = stl.IsMovieOrActor,
+                    ListName = stl.ListName,
+                    ListDescription = stl.ListDescription,
+                    IsPrivate = stl.IsPrivate,
+                    ListOfMovies = stl.ListOfMovies,
+                    IsReported = stl.IsReported,
+                    //Image = _context.FilesToDatabase
+                    //    .Where(i => i.ListID == stl.FavouriteListID)
+                    //    .Select(si => new FavouriteListIndexImageViewModel
+                    //    {
+                    //        ImageID = si.ImageID,
+                    //        ListID = si.ListID,
+                    //        ImageData = si.ImageData,
+                    //        ImageTitle = si.ImageTitle,
+                    //        Image = string.Format("data:image/gif;base64,{0}", Convert.ToBase64String(si.ImageData))
+                    //    }).ToList()
+                }).First();
+            //add vd atr here later, for checking if user&admin
+
+            if (thisList == null)
+            {
+                return NotFound();
+            }
+
+            return View("Details", thisList);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> UserTogglePrivacy(Guid id)
+        {
+            favouriteList thisList = await _favouriteListsServices.DetailsAsync(id);
+
             FavouriteListDto updatedList = new FavouriteListDto();
             updatedList.FavouriteListID = thisList.FavouriteListID;
             updatedList.ListBelongsToUser = thisList.ListBelongsToUser;
@@ -116,10 +162,37 @@ namespace Filminurk.Controllers
             updatedList.ListCreatedAt = thisList.ListCreatedAt;
             updatedList.ListModifiedAt = DateTime.Now;
             updatedList.ListDeletedAt = thisList.ListDeletedAt;
-
             thisList.IsPrivate = !thisList.IsPrivate;
-            _favouriteListsServices.Update(thisList);
-            return View("Details");
+
+            var result = await _favouriteListsServices.Update(updatedList, "Private");
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction("UserDetails", result.FavouriteListID);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UserDelete(Guid id)
+        {
+            var deletedList = await _favouriteListsServices.DetailsAsync(id);
+            deletedList.ListDeletedAt = DateTime.Now;
+
+            var dto = new FavouriteListDto();
+            dto.FavouriteListID = deletedList.FavouriteListID;
+            dto.ListBelongsToUser = deletedList.ListBelongsToUser;
+            dto.ListName = deletedList.ListName;
+            dto.ListDescription = deletedList.ListDescription;
+            dto.IsPrivate = deletedList.IsPrivate;
+            dto.ListOfMovies = deletedList.ListOfMovies;
+            dto.IsReported = deletedList.IsReported;
+            dto.IsMovieOrActor = deletedList.IsMovieOrActor;
+            dto.ListCreatedAt = deletedList.ListCreatedAt;
+            dto.ListModifiedAt = DateTime.Now;
+            dto.ListDeletedAt = DateTime.Now;
+
+            var result = await _favouriteListsServices.Update(dto, "Private");
         }
 
         private List<Guid> MovieToId(List<Movie> ListOfMovies)

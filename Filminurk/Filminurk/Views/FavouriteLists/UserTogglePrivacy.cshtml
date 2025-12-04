@@ -4,6 +4,7 @@
 	int rowNumber = 1;
 }
 <div>
+	<h1>USERTOGGLEPRIVACY</h1>
 	@if (Model.IsReported == true)
 	{
 		@:Sinu Nimekiri rikub kogukonna reegleid <br>
@@ -40,10 +41,7 @@
 		}
 	</table>
 	<div>
-		<input asp-action="UserDelete" asp-controller="FavouriteLists" asp-route-id="@Model.FavouriteListID" type="submit" class="btn btn-danger" value="Kustuta Nimekiri" />
-		<input asp-action="UserTogglePrivacy" asp-controller="FavouriteLists" asp-route-id="@Model.FavouriteListID" type="submit" class="btn btn-warning" value="Muuda nimekiri privaatseks"/>
-		@* <input asp-action="UserTogglePrivacy" asp-controller="FavouriteListsController" asp-route-id="@Model.FavouriteListID" formmoethod="get" type="submit" class="btn btn-warning" value="Muuda nimekiri privaatseks"/> *@
-		<input asp-action="UserEditList" asp-controller="FavouriteLists" asp-route-id="@Model.FavouriteListID" type="submit" class="btn btn-success" value="Muuda nimekirja sisu ja andmeid" />
-		<a asp-action="Index" asp-controller="FavouriteLists" class="btn btn-success">Tagasi</a>
+		<input asp-action="UserTogglePrivacy" asp-controller="FavouriteListsController" asp-route-id="@Model.FavouriteListID" type="submit" class="btn btn-warning" value="Muuda nimekiri privaatseks" />
+		<a asp-action="Index" asp-controller="FavouriteListsController" class="btn btn-success">Tagasi</a>
 	</div>
 </div>

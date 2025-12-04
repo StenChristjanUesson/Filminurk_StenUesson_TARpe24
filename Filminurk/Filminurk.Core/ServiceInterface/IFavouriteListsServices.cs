@@ -10,7 +10,9 @@ namespace Filminurk.Core.ServiceInterface
 {
     public interface IFavouriteListsServices
     {
-        Task<favouriteList> DetailsAsync(Guid id);
+        public Task<favouriteList> DetailsAsync(Guid id);
         Task<favouriteList> Create(FavouriteListDto dto);
+        Task<favouriteList> Update(FavouriteListDto dto);
+        
     }
 }
