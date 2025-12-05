@@ -4,6 +4,8 @@ namespace Filminurk.Models.FavouritesLists
 {
     public class FavoriteListUserCreateViewModel
     {
+        internal readonly string? ListDescription;
+
         public Guid? FavouriteListID { get; set; }
         public string ListBelongsToUser { get; set; }
         public bool IsMovieOrActor { get; set; }

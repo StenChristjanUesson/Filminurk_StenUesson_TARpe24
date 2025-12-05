@@ -8,6 +8,7 @@ using Filminurk.Core.ServiceInterface;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
+using Environment = Filminurk.Data.Environment;
 
 namespace Filminurk.ApplicationServices.Services
 {
@@ -22,9 +23,9 @@ namespace Filminurk.ApplicationServices.Services
         public void SendEmail(EmailDto dto)
         {
             var email = new MimeMessage();
-            _configuration.GetSection("EmailUsername").Value = "stenuesson";
-            _configuration.GetSection("EmailHost").Value = "smtp.gmai.com";
-            _configuration.GetSection("EmailPassword").Value = "kyjr uqkg taqw hsid";
+            _configuration.GetSection("EmailUsername").Value = Environment.gmailusername;
+            _configuration.GetSection("EmailHost").Value = Environment.smtpaddress;
+            _configuration.GetSection("EmailPassword").Value = Environment.gmailapppassword;
 
             email.From.Add(MailboxAddress.Parse(_configuration.GetSection("EmailUserName").Value));
             email.To.Add(MailboxAddress.Parse(dto.SendToThisAddress));

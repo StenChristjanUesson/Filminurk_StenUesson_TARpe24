@@ -193,6 +193,7 @@ namespace Filminurk.Controllers
             dto.ListDeletedAt = DateTime.Now;
 
             var result = await _favouriteListsServices.Update(dto, "Private");
+            return RedirectToAction(nameof(Index));
         }
 
         private List<Guid> MovieToId(List<Movie> ListOfMovies)
