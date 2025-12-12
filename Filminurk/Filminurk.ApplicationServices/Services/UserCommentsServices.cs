@@ -48,8 +48,11 @@ namespace Filminurk.ApplicationServices.Services
         public async Task<UserComment> Delete(Guid id)
         {
             var result = await _context.UserComments.FirstOrDefaultAsync(x =>x.CommentID == id);
-            _context.UserComments.Remove(result);
-            await _context.SaveChangesAsync();
+            if (result != null)
+            {
+                _context.UserComments.Remove(result);
+                await _context.SaveChangesAsync();
+            }
             return result;
             //TODO: send email to user, that comment was removed, containing original comment.
         }
