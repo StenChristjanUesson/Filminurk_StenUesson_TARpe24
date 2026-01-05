@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Filminurk.ApplicationServices.Services;
 using Filminurk.Core.Domain;
 using Filminurk.Core.ServiceInterface;
@@ -25,6 +26,9 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmation";
     options.Lockout.MaxFailedAccessAttempts = 3;
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.User.RequireUniqueEmail = true;
+    options.User.AllowedUserNameCharacters =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
 })
     .AddEntityFrameworkStores<FilminurkTARpe24Context>()
     .AddDefaultTokenProviders()
